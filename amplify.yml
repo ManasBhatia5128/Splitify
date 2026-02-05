@@ -1,0 +1,22 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+        - touch .env.production
+        - echo "APP_AWS_ACCESS_KEY=$APP_AWS_ACCESS_KEY" >> .env.production
+        - echo "APP_AWS_SECRET_ACCESS_KEY=$APP_AWS_SECRET_ACCESS_KEY" >> .env.production
+        - echo "APP_AWS_REGION=$APP_AWS_REGION" >> .env.production
+        - echo "APP_AWS_TRANSACTION_TABLE_NAME=$APP_AWS_TRANSACTION_TABLE_NAME" >> .env.production
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - .next/cache/**/*
+      - .npm/**/*
